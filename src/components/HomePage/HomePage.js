@@ -1,16 +1,22 @@
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect, Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVideo, faKeyboard } from "@fortawesome/free-solid-svg-icons";
 import shortid from "shortid";
 import "./HomePage.scss";
 import Header from "../UI/Header/Header";
-
+import { useState } from "react";
+// https://duomeet355.web.app/
 const HomePage = () => {
+  const [link, setLink] = useState("");
   const history = useHistory();
 
   const startCall = () => {
     const uid = shortid.generate();
     history.push(`/${uid}#init`);
+  };
+
+  const handleInputChange = (e) => {
+    setLink(e.target.value);
   };
 
   return (
@@ -32,9 +38,15 @@ const HomePage = () => {
               <div className="input-block">
                 <div className="input-section">
                   <FontAwesomeIcon className="icon-block" icon={faKeyboard} />
-                  <input placeholder="Enter a code or link" />
+                  <input
+                    placeholder="Enter meeting code"
+                    value={link}
+                    onChange={handleInputChange}
+                  />
                 </div>
-                <button className="btn no-bg">Join</button>
+                <button className="btn no-bg">
+                  <Link to={link}>Join</Link>
+                </button>
               </div>
             </div>
           </div>

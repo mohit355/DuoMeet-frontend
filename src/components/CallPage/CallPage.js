@@ -1,24 +1,23 @@
 import { useEffect, useReducer, useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
+import { getRequest, postRequest } from "./../../utils/apiRequests";
+import {
+  BASE_URL,
+  GET_CALL_ID,
+  SAVE_CALL_ID,
+} from "./../../utils/apiEndpoints";
+import io from "socket.io-client";
+import Peer from "simple-peer";
+import "./CallPage.scss";
 import Messenger from "./../UI/Messenger/Messenger";
 import MessageListReducer from "../../reducers/MessageListReducer";
 import Alert from "../UI/Alert/Alert";
 import MeetingInfo from "../UI/MeetingInfo/MeetingInfo";
 import CallPageFooter from "../UI/CallPageFooter/CallPageFooter";
 import CallPageHeader from "../UI/CallPageHeader/CallPageHeader";
-import { useParams, useHistory } from "react-router-dom";
-import { getRequest, postRequest } from "./../../utils/apiRequests";
-import io from "socket.io-client";
-import Peer from "simple-peer";
-import "./CallPage.scss";
-import NoMatch from "../NoMatch/NoMatch";
-import {
-  BASE_URL,
-  GET_CALL_ID,
-  SAVE_CALL_ID,
-} from "./../../utils/apiEndpoints";
 
 let peer = null;
-const socket = io.connect("http://localhost:4000");
+const socket = io.connect(process.env.REACT_APP_BASE_URL);
 const initialState = [];
 
 const CallPage = () => {
@@ -26,6 +25,7 @@ const CallPage = () => {
   let { id } = useParams();
   const isAdmin = window.location.hash === "#init" ? true : false;
   const url = `${window.location.origin}${window.location.pathname}`;
+  const meetCode = window.location.pathname;
   let alertTimeout = null;
 
   const [messageList, messageListReducer] = useReducer(
@@ -40,7 +40,6 @@ const CallPage = () => {
   const [isMessenger, setIsMessenger] = useState(false);
   const [messageAlert, setMessageAlert] = useState({});
   const [isAudio, setIsAudio] = useState(true);
-  const [handleError, setHandleError] = useState(false);
 
   useEffect(() => {
     if (isAdmin) {
@@ -57,8 +56,7 @@ const CallPage = () => {
   const getRecieverCode = async () => {
     await getRequest(`${BASE_URL}${GET_CALL_ID}/${id}`).then((data) => {
       if (data.error) {
-        console.log("error in getting data from database");
-        setHandleError(true);
+        console.log("error in getting data from mongo");
       } else {
         peer.signal(data);
       }
@@ -72,6 +70,8 @@ const CallPage = () => {
         audio: true,
       })
       .then((stream) => {
+        console.log("Stream ", stream);
+
         setStreamObj(stream);
 
         peer = new Peer({
@@ -96,7 +96,6 @@ const CallPage = () => {
               (data) => {
                 if (data.error) {
                   console.log("error in saving data ", data.error);
-                  setHandleError(true);
                 }
               }
             );
@@ -212,10 +211,6 @@ const CallPage = () => {
     window.location.reload();
   };
 
-  if (handleError) {
-    return <NoMatch></NoMatch>;
-  }
-
   return (
     <div className="callpage-container">
       <video className="video-container" src="" controls></video>
@@ -236,7 +231,11 @@ const CallPage = () => {
       />
 
       {isAdmin && meetInfoPopup && (
-        <MeetingInfo setMeetInfoPopup={setMeetInfoPopup} url={url} />
+        <MeetingInfo
+          setMeetInfoPopup={setMeetInfoPopup}
+          url={url}
+          meetCode={meetCode}
+        />
       )}
       {isMessenger ? (
         <Messenger
