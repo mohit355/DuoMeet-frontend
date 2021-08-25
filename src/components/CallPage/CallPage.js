@@ -1,27 +1,21 @@
 import { useEffect, useReducer, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import {
-  getRequest,
-  postRequest,
-  getRequestM,
-  postRequestM,
-} from "./../../utils/apiRequests";
-import {
-  BASE_URL,
-  GET_CALL_ID,
-  GET_CALL_IDM,
-  SAVE_CALL_ID,
-  SAVE_CALL_IDM,
-} from "./../../utils/apiEndpoints";
-import io from "socket.io-client";
-import Peer from "simple-peer";
-import "./CallPage.scss";
 import Messenger from "./../UI/Messenger/Messenger";
 import MessageListReducer from "../../reducers/MessageListReducer";
 import Alert from "../UI/Alert/Alert";
 import MeetingInfo from "../UI/MeetingInfo/MeetingInfo";
 import CallPageFooter from "../UI/CallPageFooter/CallPageFooter";
 import CallPageHeader from "../UI/CallPageHeader/CallPageHeader";
+import { useParams, useHistory } from "react-router-dom";
+import { getRequest, postRequest } from "./../../utils/apiRequests";
+import io from "socket.io-client";
+import Peer from "simple-peer";
+import "./CallPage.scss";
+import NoMatch from "../NoMatch/NoMatch";
+import {
+  BASE_URL,
+  GET_CALL_ID,
+  SAVE_CALL_ID,
+} from "./../../utils/apiEndpoints";
 
 let peer = null;
 const socket = io.connect("http://localhost:4000");
@@ -46,6 +40,7 @@ const CallPage = () => {
   const [isMessenger, setIsMessenger] = useState(false);
   const [messageAlert, setMessageAlert] = useState({});
   const [isAudio, setIsAudio] = useState(true);
+  const [handleError, setHandleError] = useState(false);
 
   useEffect(() => {
     if (isAdmin) {
@@ -60,17 +55,11 @@ const CallPage = () => {
   }, []);
 
   const getRecieverCode = async () => {
-    // const response = await getRequest(`${BASE_URL}${GET_CALL_ID}/${id}`);
-    // console.log("response code from redis ", response.code);
-
-    // if (response.code) {
-    //   peer.signal(response.code);
-    // }
     await getRequest(`${BASE_URL}${GET_CALL_ID}/${id}`).then((data) => {
       if (data.error) {
-        console.log("error in getting data from mongo");
+        console.log("error in getting data from database");
+        setHandleError(true);
       } else {
-        console.log("data code from mongo ", data);
         peer.signal(data);
       }
     });
@@ -83,14 +72,6 @@ const CallPage = () => {
         audio: true,
       })
       .then((stream) => {
-        console.log("Stream ", stream);
-
-        //         active: true
-        // id: "yPDDrW322B5NYSXNaoYry55GLbBuFyWODwze"
-        // onactive: null
-        // onaddtrack: null
-        // oninactive: null
-
         setStreamObj(stream);
 
         peer = new Peer({
@@ -107,26 +88,15 @@ const CallPage = () => {
         peer.on("signal", async (data) => {
           if (isAdmin) {
             let payload = {
-              id,
-              signalData: data,
-            };
-
-            let payloadM = {
               meetId: id,
               streamData: data,
             };
-            console.log(
-              "add data",
-              typeof payloadM.meetId,
-              typeof payloadM.streamData
-            );
-            // await postRequest(`${BASE_URL}${SAVE_CALL_ID}`, payload);
-            await postRequest(`${BASE_URL}${SAVE_CALL_ID}`, payloadM).then(
+
+            await postRequest(`${BASE_URL}${SAVE_CALL_ID}`, payload).then(
               (data) => {
                 if (data.error) {
                   console.log("error in saving data ", data.error);
-                } else {
-                  console.log("Data saved successfully ", data);
+                  setHandleError(true);
                 }
               }
             );
@@ -241,6 +211,10 @@ const CallPage = () => {
     history.push("/");
     window.location.reload();
   };
+
+  if (handleError) {
+    return <NoMatch></NoMatch>;
+  }
 
   return (
     <div className="callpage-container">
