@@ -1,0 +1,48 @@
+.header {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.header .logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 124px;
+}
+
+.header .logo img {
+  width: 100%;
+}
+
+.header .logo .help-text {
+  font-size: 22px;
+  padding-left: 4px;
+  color: #5f6368;
+}
+
+.header .action-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header .action-btn .icon-block {
+  font-size: 20px;
+  padding: 10px;
+  color: #5f6368;
+}
+/*# sourceMappingURL=Header.css.map */

@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACE,mBADiB,CACjB,gBAAgB,CAAC;EACf,MAAM,EAAE,KAAK;EACb,KAAK,EAAE,IAAI;EACX,UAAU,EAAE,KAAK;EACjB,QAAQ,EAAE,QAAQ;EAClB,OAAO,EAAE,EAAE;CACZ",
+    "sources": [
+        "CallPage.scss"
+    ],
+    "names": [],
+    "file": "CallPage.css"
+}

@@ -1,0 +1,144 @@
+.messenger-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #fff;
+  height: calc(100vh - 90px);
+  width: 350px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.messenger-container .messenger-header {
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 10px 0;
+}
+
+.messenger-container .messenger-header h3 {
+  margin: 0;
+  font-weight: 400;
+}
+
+.messenger-container .messenger-header .icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.messenger-container .messenger-header-tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.messenger-container .messenger-header-tabs .tab {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  color: #555;
+}
+
+.messenger-container .messenger-header-tabs .tab p {
+  margin-left: 10px;
+}
+
+.messenger-container .messenger-header-tabs .tab.active {
+  border-bottom: 2px solid #04796a;
+  color: #04796a;
+}
+
+.messenger-container .messenger-header-tabs .tab:hover {
+  cursor: pointer;
+  background: rgba(0, 121, 107, 0.039);
+}
+
+.messenger-container .chat-section {
+  padding: 20px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow-y: scroll;
+}
+
+.messenger-container .chat-section .chat-block {
+  margin-bottom: 30px;
+}
+
+.messenger-container .chat-section .chat-block .sender {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.messenger-container .chat-section .chat-block .sender small {
+  margin-left: 5px;
+  font-weight: 300;
+}
+
+.messenger-container .chat-section .chat-block .msg {
+  margin: 0;
+  padding-top: 5px;
+  color: #555;
+  font-size: 14px;
+}
+
+.messenger-container .send-msg-section {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: #555;
+}
+
+.messenger-container .send-msg-section input {
+  padding: 5px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #eee;
+  width: 80%;
+}
+
+.messenger-container .send-msg-section .icon {
+  cursor: pointer;
+}
+
+.messenger-container .send-msg-section .icon:hover {
+  color: #04796a;
+}
+/*# sourceMappingURL=Messenger.css.map */

@@ -1,0 +1,10 @@
+.green {
+  background: #00796b !important;
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+
+.green:hover {
+  background: #00685c !important;
+}
+/*# sourceMappingURL=App.css.map */
